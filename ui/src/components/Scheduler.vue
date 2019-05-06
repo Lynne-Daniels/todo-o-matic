@@ -18,18 +18,28 @@
         </v-flex>
         <v-flex xs12 md4>
           <v-select
-            v-model="firstDDinDaysFromStart"
-            :items="optionsFirstDDinDaysFromStart"
-            label="Begin"
+            :disabled="isRepeating"
+            v-model="oneTimeDD"
+            :items="optionsOneTimeDD"
+            label="Begin One-time Todo"
             outline
           ></v-select>
           <v-select
-            v-model="repeat"
-            :items="optionsRepeat"
+            :disabled="!isRepeating"
+            v-model="beginRepeating"
+            :items="optionsBeginRpeating"
+            label="Begin Repeating Todos"
+            outline
+          ></v-select>
+          <v-select
+            :disabled="!isRepeating"
+            v-model="repeatInterval"
+            :items="optionsRepeatInterval"
             label="Repeat"
             outline
           ></v-select>
           <v-select
+            :disabled="!isRepeating"
             v-model="preferredDay"
             :items="optionsPreferredDay"
             label="Preferred Day"
@@ -49,8 +59,14 @@
 </template>
 
 <script>
+// import {jobUTC, testTime} from '../utils/cronify'
+import * as rr from '../utils/rrules'
+
 export default {
   name: 'Scheduler',
+  props: {
+    handleSubmit: Function,
+  },
   data: () => ({
     // valid: false,
     description: '',
@@ -59,8 +75,8 @@ export default {
       v => v.length <= 255 || 'Description must be less than 255 characters',
     ],
     isRepeating: false,
-    firstDDinDaysFromStart: null,
-    optionsFirstDDinDaysFromStart: [
+    oneTimeDD: null,
+    optionsOneTimeDD: [
       {
         value: 1,
         text: 'Day One',
@@ -149,11 +165,47 @@ export default {
         text: 'Saturday',
       },
     ],
-    repeat: null,
-    optionsRepeat: [
+    beginRepeating: null,
+    optionsBeginRpeating: [
+      {
+        // milliseconds from Now or some other time, like subscription start
+        value: 0,
+        text: 'Today',
+      },
+      {
+        value: 1000 * 60 * 60 * 24 * 1* 7,
+        text: 'Week 2',
+      },
+      {
+        value: 1000 * 60 * 60 * 24 * 2 * 7,
+        text: 'Week 3',
+      },
+      {
+        value: 1000 * 60 * 60 * 24 * 3 * 7,
+        text: 'Week 4',
+      },
+      {
+        value: 1000 * 60 * 60 * 24 * 4 * 7,
+        text: 'Week 5',
+      },
+      {
+        value: 1000 * 60 * 60 * 24 * 5 * 7,
+        text: 'Week 6',
+      },
+      {
+        value: 1000 * 60 * 60 * 24 * 6 * 7,
+        text: 'Week 7',
+      },
+      {
+        value: 1000 * 60 * 60 * 24 * 7 * 7,
+        text: 'Week 8',
+      },
+    ],
+    repeatInterval: null,
+    optionsRepeatInterval: [
       {
         value: 0,
-        text: 'Every Day',
+        text: 'Every Weekday',
       },
       {
         value: 1,
@@ -185,14 +237,24 @@ export default {
     submit() {
       const todo = {
         isRepeating: this.isRepeating,
-        firstDDinDaysFromStart: this.firstDDinDaysFromStart,
-        repeat: this.repeat,
+        oneTimeDD: this.oneTimeDD,
+        repeatInterval: this.repeatInterval,
         preferredDay: this.preferredDay,
+        description: this.description,
       }
       console.log('Submitting!', todo)
+      this.handleSubmit(todo)
     },
+    resetForm() {
+      this.isRepeating = false
+      this.oneTimeDd = null
+      this.repeatInterval = null
+      this.preferredDay = null
+      this.description = null
+    },
+  },
+  mounted() {
+    // rr.rule.()
   },
 }
 </script>
-
-<style></style>
