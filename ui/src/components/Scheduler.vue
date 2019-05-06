@@ -52,6 +52,9 @@
           <v-btn @click="submit" color="purple" light outline round>
             Submit
           </v-btn>
+          <v-btn @click="resetForm" color="teal" light outline round>
+            Reset
+          </v-btn>
         </v-flex>
       </v-layout>
     </v-container>
@@ -169,35 +172,35 @@ export default {
     optionsBeginRpeating: [
       {
         // milliseconds from Now or some other time, like subscription start
-        value: 0,
+        value: 1,
         text: 'Today',
       },
       {
-        value: 1000 * 60 * 60 * 24 * 1* 7,
+        value: 7,
         text: 'Week 2',
       },
       {
-        value: 1000 * 60 * 60 * 24 * 2 * 7,
+        value: 14,
         text: 'Week 3',
       },
       {
-        value: 1000 * 60 * 60 * 24 * 3 * 7,
+        value: 21,
         text: 'Week 4',
       },
       {
-        value: 1000 * 60 * 60 * 24 * 4 * 7,
+        value: 28,
         text: 'Week 5',
       },
       {
-        value: 1000 * 60 * 60 * 24 * 5 * 7,
+        value: 35,
         text: 'Week 6',
       },
       {
-        value: 1000 * 60 * 60 * 24 * 6 * 7,
+        value: 42,
         text: 'Week 7',
       },
       {
-        value: 1000 * 60 * 60 * 24 * 7 * 7,
+        value: 49,
         text: 'Week 8',
       },
     ],
@@ -235,12 +238,16 @@ export default {
   }),
   methods: {
     submit() {
+      // todo validate data to prevent the
+      //TypeError: Invalid attempt to spread non-iterable instance"
+      // need better error message
       const todo = {
         isRepeating: this.isRepeating,
         oneTimeDD: this.oneTimeDD,
         repeatInterval: this.repeatInterval,
         preferredDay: this.preferredDay,
         description: this.description,
+        beginRepeating: this.beginRepeating,
       }
       console.log('Submitting!', todo)
       this.handleSubmit(todo)
@@ -251,6 +258,7 @@ export default {
       this.repeatInterval = null
       this.preferredDay = null
       this.description = null
+      this.beginRepeating = null
     },
   },
   mounted() {
