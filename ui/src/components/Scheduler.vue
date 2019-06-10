@@ -223,15 +223,15 @@ export default {
         text: 'Every 3 Weeks',
       },
       {
-        value: 3,
+        value: 4.34524,
         text: 'Every Month',
       },
       {
-        value: 4,
+        value: 4.34524 * 3,
         text: 'Every Quarter',
       },
       {
-        value: 5,
+        value: 52,
         text: 'Every Year',
       },
     ],

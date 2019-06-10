@@ -64,21 +64,12 @@ export default {
     },
     calenderizeFormInput(formData) {
       console.log(this.calcDate(formData.oneTimeDD))
-      /*
-      TODO Figure out why when adding items betewen 11 and midnight
-      items were showing as taking 2 days(double length bars in the calendar)
-      This happened to all the form generated events, but the hard coded
-      recurring events were ok.  
-      */
       if (formData.isRepeating === false) {
         return [
           {
             title: formData.description,
-            start: this.calcDate(formData.oneTimeDD), // covers 2 days idk why
-            // start: '2019-05-08T10:30', // shows as 1 day -- good
-            // start: 'Mon May 06 2019 10:56:33 GMT-0400', // no worky
-            // end: this.calcDate(formData.oneTimeDD + 1),
-            duration: '01:00',
+            start: this.calcDate(formData.oneTimeDD),
+            duration: '00:01',
           },
         ]
       }
@@ -94,6 +85,7 @@ export default {
         return [
           {
             title: formData.description,
+            duration: '00:01',
             rrule: {
               freq: 'weekly',
               interval: formData.repeatInterval,
